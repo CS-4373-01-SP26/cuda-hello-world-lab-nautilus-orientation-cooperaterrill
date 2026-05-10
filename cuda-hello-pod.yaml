@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cuda-hello-pod
+  namespace: tandy-hpc
+  labels:
+    app: cuda-hello
+spec:
+  restartPolicy: Never
+  containers:
+    - name: cuda-hello
+      image: nvidia/cuda:12.2.0-devel-ubuntu22.04
+      command: ["/bin/bash", "-c", "sleep infinity"]
+      resources:
+        requests:
+          memory: "1Gi"
+          cpu: "1"
+          nvidia.com/gpu: "1"
+        limits:
+          memory: "2Gi"
+          cpu: "2"
+          nvidia.com/gpu: "1"
+      env:
+        - name: DEBIAN_FRONTEND
+          value: noninteractive
+        - name: NVIDIA_VISIBLE_DEVICES
+          value: all
+        - name: NVIDIA_DRIVER_CAPABILITIES
+          value: compute,utility
